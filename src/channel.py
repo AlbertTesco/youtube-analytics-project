@@ -1,6 +1,5 @@
 import json
 from googleapiclient.discovery import build
-
 import os
 
 API_KEY: str = os.environ.get('YT_API_KEY')
@@ -8,15 +7,12 @@ API_KEY: str = os.environ.get('YT_API_KEY')
 
 class Channel:
     """Класс для ютуб-канала"""
-    youtube = build('youtube', 'v3', developerKey=API_KEY)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
 
-        youtube = Channel.get_service()
-
-        request = youtube.channels().list(
+        request = Channel.get_service().channels().list(
             part='snippet,statistics',
             id=self.__channel_id
         ).execute()
@@ -67,7 +63,7 @@ class Channel:
         """
         Геттер для атрибута youtube
         """
-        return cls.youtube
+        return build('youtube', 'v3', developerKey=API_KEY)
 
     def to_json(self, path: str):
         """
